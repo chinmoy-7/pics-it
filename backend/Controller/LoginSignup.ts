@@ -2,11 +2,13 @@ import express from 'express'
 import bcrypt from "bcrypt"
 import jwt from 'jsonwebtoken'
 import signup from '../Model/Register'
+import profile from '../Model/Profile'
+
 
 export const LoginController=async (req:express.Request,reply:express.Response)=>{
         try {
             const {username,email,password}=req.body
-            const user:{email:string,password:string,username:string}|null = await signup.findOne({username:username})
+            const user:{email:string,password:string,username:string,_id:object}|null = await signup.findOne({username:username})
             if(!user){
                 return reply.send({
                     status:404,
@@ -19,7 +21,7 @@ export const LoginController=async (req:express.Request,reply:express.Response)=
             isCheck = await bcrypt.compare(password,user.password)
     
             if(isCheck){
-                const token = jwt.sign({email:email},`${process.env.JWT_KEY}`)
+                const token = jwt.sign({username:username,userId:user._id},`${process.env.JWT_KEY}`)
                 return reply.send({
                     status:200,
                     jwt_token:token
@@ -50,6 +52,11 @@ export const SignupController=async (req: express.Request, reply: express.Respon
         username:username,
         email: email,
         password: hashedPassword,
+      });
+      const newProfile = await profile.create({
+        user_id:newUser._id,
+        username:username,
+        email: email,
       });
   
       reply.send({
