@@ -2,7 +2,6 @@
 import { S3Client } from '@aws-sdk/client-s3'
 import dotenv from 'dotenv'
 dotenv.config()
-const bucketName=process.env.S3_BUCKET
 const region=process.env.AWS_REGION
 const secret=process.env.AWS_SECRET
 const access = process.env.AWS_ACCESS

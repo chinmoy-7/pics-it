@@ -1,6 +1,7 @@
 import express from "express";
 import { getProfile } from "../Service/Profile";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand,GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3 } from "../S3/s3";
 import { RandomName } from "../Helper/util";
 import sharp from "sharp";
@@ -49,6 +50,7 @@ export const UploadController = async (req: any, res: any) => {
       image_name: imageName,
       time_added: currentTime,
       isDeleted: 0,
+      user_name:req.user.username
     });
 
     res.send({
@@ -71,15 +73,20 @@ export const getMyImages = async (req: any, res: any) => {
         return aTime.diff(bTime);
     })
 
-    let userPhotos:string[]=[]
-    for(let i of allPhotos){
-        if(typeof(i.image_name)=="string")
-        userPhotos.push(i.image_name)
-    }
-    console.log(userPhotos)
+    let modifedImages=await Promise.all(allPhotos.map(async(photo:any)=>{
+      const getObjParam: any = {
+        Bucket: bucketName,
+        Key: photo["image_name"]
+      };
+      const command = new GetObjectCommand(getObjParam);
+      let url = await getSignedUrl(s3,command,{expiresIn:3600})
+      photo["image_url"]=url
+      return photo
+    }))
+
     res.send({
         status:200,
-        images:userPhotos
+        modifedImages
     })
     
   } catch (error:any) {
@@ -89,13 +96,31 @@ export const getMyImages = async (req: any, res: any) => {
 
 export const getFollowedImage=async(req:any,res:any)=>{
   try {
-      const {followed}=req.body
-      const allPhotos = await photos.find({
+      let followed:string[]=[];
+      const user = await getProfile(req.user)
+      if(user)
+       followed = user.friends
+      const allPhotos:any = await photos.find({
         user_id:{$in:[...followed]}
       })
+
+      let modifedPhotos=await Promise.all(allPhotos.map(async (photo: any) => {
+        const getObjParam: any = {
+          Bucket: bucketName,
+          Key: photo["image_name"]
+        };
+        const command = new GetObjectCommand(getObjParam);
+        const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+        photo["image_url"] = url;
+        return photo;
+      }));
+      let response = {
+        modifedPhotos,
+        user
+      }
       return res.send({
         status:200,
-        allPhotos
+        response
       })
   } catch (error:any) {
     throw new Error(error)

@@ -27,14 +27,14 @@ function Login() {
               <input
                 type="email"
                 name="email"
-                class="px-3 py-2  bg-gray-100 w-5/6 border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                className="px-3 py-2  bg-gray-100 w-5/6 border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
                 placeholder="Username"
                 onChange={(e)=>auth.setCred({...auth.cred,username:e.target.value})}
               />
               <input
                 type="password"
                 name="password"
-                class="px-3 py-2  bg-gray-100 w-5/6 border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                className="px-3 py-2  bg-gray-100 w-5/6 border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
                 placeholder="Password"
                 onChange={(e)=>auth.setCred({...auth.cred,password:e.target.value})}
               />

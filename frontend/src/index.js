@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import App from './App';
 import reportWebVitals from "./reportWebVitals";
 import Login from "./components/Login";
+import Feed from "./components/Feed";
 import { AuthContextProvider } from "./Context/AuthContext";
 import '../node_modules/react-toastify/dist/ReactToastify.css';
 // import 
@@ -15,6 +16,7 @@ root.render(
   <AuthContextProvider>
     <Routes>
       <Route path="/" element={<Login />}/>
+      <Route path="/feed" element={<Feed />}/>
     </Routes>
   </AuthContextProvider>
   </BrowserRouter>

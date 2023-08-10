@@ -1,13 +1,18 @@
 import { createContext, useState } from "react";
 import axios from 'axios'
 import {toast} from 'react-toastify'
+import { useNavigate } from "react-router-dom";
 
 const authContext=createContext()
 
 
 const AuthContextProvider = ({children})=>{
+
+    const navigate=useNavigate()
+
     //states
     const [cred,setCred]=useState({email:"",username:"",password:""})
+    const [loading,setLoading]=useState(false)
 
     //Toast Notification Function
     const notify=(type,msg)=>{
@@ -41,16 +46,19 @@ const AuthContextProvider = ({children})=>{
     const loginHandler=async ()=>{
         notify("server")
         const login=await axios.post("http://localhost:4000/login",cred)
+        
         if(login.data.status==404){
             notify("error","No user found")
             return
         }
         if(login.data.status==200){
             notify("success","Login Successfull")
+            window.sessionStorage.setItem("token",login.data.jwt_token)
+            navigate("/feed")
         }
     }
     return(
-        <authContext.Provider value={{cred,setCred,loginHandler}} >
+        <authContext.Provider value={{cred,setCred,loginHandler,notify,loading,setLoading}} >
             {children}
         </authContext.Provider>
     )
