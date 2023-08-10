@@ -47,6 +47,7 @@ export const SignupController=async (req: express.Request, reply: express.Respon
               message:"User already Exists"
           })
       }
+      console.log("working===========",password,username,email)
       const hashedPassword=await bcrypt.hash(password,10)
       const newUser = await signup.create({
         username:username,

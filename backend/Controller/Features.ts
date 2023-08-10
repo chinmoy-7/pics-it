@@ -86,3 +86,18 @@ export const getMyImages = async (req: any, res: any) => {
     throw new Error(error);
   }
 };
+
+export const getFollowedImage=async(req:any,res:any)=>{
+  try {
+      const {followed}=req.body
+      const allPhotos = await photos.find({
+        user_id:{$in:[...followed]}
+      })
+      return res.send({
+        status:200,
+        allPhotos
+      })
+  } catch (error:any) {
+    throw new Error(error)
+  }
+}

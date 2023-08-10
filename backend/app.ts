@@ -9,7 +9,7 @@ dotenv.config()
 
 const app:express.Application=express()
 
-// app.use(bodyparser.json())
+app.use(bodyparser.json())
 app.use(express.urlencoded({extended:true}))
 // app.use(bodyparser.urlencoded())
 app.use(cors())
