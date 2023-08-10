@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ColorRing } from "react-loader-spinner";
 import Cards from "./Cards";
 import SideBar from "./SideBar";
+import Search from "./Search";
 function Feed() {
   const auth = useContext(authContext);
   return (
@@ -39,11 +40,17 @@ function Feed() {
                   ]}
                 />
               </div>
-            ) : (
+            ) :auth.currentPage=="Home"? (
               <div className="bg-black/20 h-89vh overflow-auto md:flex md:flex-col  md:justify-start md:items-center">
                 <Cards/>
               </div>
-            )}
+            )
+            :auth.currentPage=="Search"?(
+              <div className="bg-black/20 h-89vh overflow-auto md:flex md:flex-col  md:justify-start md:items-center">
+              <Search/>
+              </div>
+            ):""
+            }
           </div>
         </div>
       </div>

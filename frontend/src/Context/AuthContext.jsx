@@ -12,7 +12,9 @@ const AuthContextProvider = ({children})=>{
 
     //states
     const [cred,setCred]=useState({email:"",username:"",password:""})
-    const [loading,setLoading]=useState(false)
+    const [search,setSearch]=useState({username:""})
+    const [currentPage,setCurrentPage]=useState("Home") //switch between componenets
+    const [loading,setLoading]=useState(false) //loading logo
 
     //Toast Notification Function
     const notify=(type,msg)=>{
@@ -58,7 +60,7 @@ const AuthContextProvider = ({children})=>{
         }
     }
     return(
-        <authContext.Provider value={{cred,setCred,loginHandler,notify,loading,setLoading}} >
+        <authContext.Provider value={{cred,setCred,loginHandler,notify,loading,setLoading,setCurrentPage,currentPage,search,setSearch}} >
             {children}
         </authContext.Provider>
     )

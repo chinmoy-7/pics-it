@@ -17,7 +17,6 @@ export const auth=async(req:any,res:express.Response,done:express.NextFunction)=
             })
         }
         req["user"]=checkToken
-        console.log(req.rawHeader)
         done()
         
 

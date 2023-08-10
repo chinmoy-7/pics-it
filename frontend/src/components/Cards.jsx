@@ -26,7 +26,6 @@ function Cards() {
       }, 2000);
     }
     setPost(posts.data.response)
-    console.log(post,">")
     auth.setLoading(false)
 
   };

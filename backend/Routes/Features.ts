@@ -2,7 +2,7 @@ import express from 'express'
 import { auth } from '../Middleware/auth'
 import { ProfileController,UploadController,getMyImages,getFollowedImage} from '../Controller/Features'
 import { upload } from '../Middleware/Multer'
-import { followOne,acceptFollow } from '../Controller/FriendReq'
+import { followOne,acceptFollow,searchPeople } from '../Controller/FriendReq'
 
 const features=express.Router()
     
@@ -13,6 +13,8 @@ features.post("/get-followed-image",auth,getFollowedImage)
 
 features.post("/send-follow-req",auth,followOne)
 features.post("/accept-follow-req",auth,acceptFollow)
+features.post("/search",auth,searchPeople)
+
 
 
 export {features}
